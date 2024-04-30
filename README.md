@@ -57,7 +57,7 @@ Edmond BERNE et Simon ROUGET
 
 
 ## Gallery
-
+- Tests réalisés sous zsh
 ![Logo](Screenshot/mank_classique.png)
 
 ![Logo](Screenshot/mank_classique_plusieurs_mots.png)
