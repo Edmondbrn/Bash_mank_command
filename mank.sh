@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/bash -
 # Fonction qui affiche l'aide liée à la commande
-help() {
+help(){
     echo "usage: $cmd aide recherche par mots clés"
     echo
     echo "Commande qui décrit brièvement une autre commande."
@@ -31,7 +31,7 @@ commande_manquante(){ # fonction qui affiche les commandes non prises en charge 
 # Fonction pour ajouter un fichier de mank
 ajouter_fichier_mank() {
     read -p "Nom du fichier de mank : " nom_fichier
-    if [ "$nom_fichier" == "" ] || [ -e "./mank_utils/$nom_fichier" ]; then # test si nom vide ou fichier déjà existant
+    if [ "$nom_fichier" == "" ] || [ -e "./mank_utils/$nom_fichier" ] || [[ "$nom_fichier" == */* ]]; then # test si nom vide ou fichier déjà existant
         zenity --error --title="Erreur nom du fichier" --text="Veuillez renseigner un nom de fichier non nul et n'existant pas déjà."
         exit
     fi
