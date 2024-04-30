@@ -21,8 +21,7 @@ commande_manquante(){ # fonction qui affiche les commandes non prises en charge 
     com_gen=$(ls "/usr/bin") # récupère les non traités
     liste_com_nntraitee=$(diff -qr ./mank_utils /usr/bin | sed -e "s/.*: //" | grep -v "Les fichiers") # trouve la différence entre les deux (/usr/bin en référence) et on enlève le message pour ne garder que le nom de la commande et on enlève les lignes ou diff indique les fichiers ont le même nom mais pas le même contenu (grep -v)
     echo "Les commandes non prises en compte par mank sont:"
-    echo "$liste_com_nntraitee" | pr -8 -t -a # fromate la sortie
-
+    echo "$liste_com_nntraitee" | pr -8 -t -a # formate la sortie
 
 }
 
