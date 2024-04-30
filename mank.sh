@@ -32,7 +32,7 @@ commande_manquante(){ # fonction qui affiche les commandes non prises en charge 
 ajouter_fichier_mank() {
     read -p "Nom du fichier de mank : " nom_fichier
     if [ "$nom_fichier" == "" ] || [ -e "./mank_utils/$nom_fichier" ]; then # test si nom vide ou fichier déjà existant
-        zenity --error --title="Erreur nom du fichier" --text="Veuillez renseigner un nom de fichier non nul et n'existant pas déjà"
+        zenity --error --title="Erreur nom du fichier" --text="Veuillez renseigner un nom de fichier non nul et n'existant pas déjà."
         exit
     fi
     while true; do # boucle pour gérer les entrées de la description
@@ -68,12 +68,12 @@ parcours_fichier(){
             fi
         done;
         if [ ${#tableau[@]} != 0 ]; then # on teste si le tuple est vide, donc si on au moins 1 match
-                echo ""$element" : $(head -n 1 "$DIR/$element") ("${tableau[@]}")" # message de sortie en cas de match
+                echo ""$element" : $(head -n 1 "$DIR/$element") ("${tableau[@]}")." # message de sortie en cas de match
                 check=1
         fi
     done;
     if [ "$check" == "0" ]; then # message d'erreur si on n'a rien trouvé
-        echo "Erreur : mot-clé inconnu dans la base de données"
+        echo "Erreur : mot-clé inconnu dans la base de données."
     fi
 }
 
@@ -83,7 +83,7 @@ parcours_fichier_-d(){
     check="0" # variable pour savoir si le mot a été trouvé ou non
     nbr_mot=$#  # compte le nombre de mots donné (ne prend pas en compte l'argument -d)
     if [ "$nbr_mot" == 0 ]; then
-        echo "Veuillez spécifier des mots-clés avec l'option -d s'il vous plait"
+        echo "Veuillez spécifier des mots-clés avec l'option -d s'il vous plait."
         exit
     fi
     for element in $liste_fichier; do # parcours fichier dans le dossier
@@ -94,19 +94,19 @@ parcours_fichier_-d(){
             fi
         done;
         if [ "$nbr_mot" == "${#tableau[@]}" ]; then # test si on a trouvé tous les mots clés dans la commande
-            echo "Match parfait, "$element" : $(head -n 1 "$DIR/$element") ("${tableau[@]}")"
+            echo "Match parfait, "$element" : $(head -n 1 "$DIR/$element") ("${tableau[@]}")."
             check=1
         fi
     done;
     if [ "$check" == "0" ]; then # message d'erreur si on n'a rien trouvé
-        echo "Erreur : aucun match parfait dans les données mank"
+        echo "Erreur : aucun match parfait dans les données mank."
     fi
 }
 
 verif_argument(){
     for mot in "$@"; do
         if [[ "${mot:0:1}" == "-" ]]; then # test si un des mots clés commencent par un - (fait buguer grep)
-            zenity --error --title="Erreur de saisie" --text="L'un des mots-clés coommence par -. \n                Veuillez le corriger"
+            zenity --error --title="Erreur de saisie" --text="L'un des mots-clés coommence par -. \n                Veuillez le corriger."
             exit
         fi
     done
