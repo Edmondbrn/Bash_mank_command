@@ -50,13 +50,13 @@ grep: argument «654» incorrect pour «--directories»
 ```
 
 
-## Authors
+## Auteurs
 Edmond BERNE et Simon ROUGET
 - [@Edmondbrn](https://www.github.com/Edmondbrn)
 - [@SimonRouget](https://github.com/SimonRouget)
 
 
-## Gallery
+## Gallerie
 - Tests réalisés sous zsh
 ![Logo](Screenshot/mank_classique.png)
 
