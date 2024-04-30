@@ -67,7 +67,7 @@ parcours_fichier(){
                 tableau+=("$cle") # on ajoute le mot clé dans un tuple
             fi
         done;
-        if [ ${#tableau[@]} != 0 ]; then # on teste si le tuple est vide, donc si on au moins 1 match
+        if [ ${#tableau[@]} != 0 ]; then # on teste si le tuple est vide, donc si on a au moins 1 match
                 echo ""$element" : $(head -n 1 "$DIR/$element") ("${tableau[@]}")." # message de sortie en cas de match
                 check=1
         fi
