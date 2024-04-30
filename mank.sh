@@ -26,16 +26,26 @@ commande_manquante(){ # fonction qui affiche les commandes non prises en charge 
     liste_com_nntraitee=$(diff -qr ./mank_utils /usr/bin | sed -e "s/.*: //" | grep -v "Les fichiers") # trouve la différence entre les deux (/usr/bin en référence) et on enlève le message pour ne garder que le nom de la commande et on enlève les lignes ou diff indique les fichiers ont le même nom mais pas le même contenu (grep -v)
     echo "Les commandes non prises en compte par mank sont:"
     echo "$liste_com_nntraitee" | pr -8 -t -a # formate la sortie
-
 }
 
 # Fonction pour ajouter un fichier de mank
 ajouter_fichier_mank() {
     read -p "Nom du fichier de mank : " nom_fichier
-    read -p "Description : " description
-
+    if [ "$nom_fichier" == "" ] || [ -e "./mank_utils/$nom_fichier" ]; then # test si nom vide ou fichier déjà existant
+        zenity --error --title="Erreur nom du fichier" --text="Veuillez renseigner un nom de fichier non nul et n'existant pas déjà"
+        exit
+    fi
+    while true; do # boucle pour gérer les entrées de la description
+        read -p "Description : " description
+        if [ "$description" == "" ]; then
+            if zenity --question --text="Votre description est vide, voulez-vous continuer ?"; then # si on dit oui
+                break
+            fi
+        else
+            break # si l'entrée est correcte
+        fi
+    done
     echo "$description" > "./mank_utils/$nom_fichier"
-
     echo "Mots clés (tapez 'fin' pour terminer) : "
     while true; do
         read mot_cle
@@ -93,6 +103,15 @@ parcours_fichier_-d(){
     fi
 }
 
+verif_argument(){
+    for mot in "$@"; do
+        if [[ "${mot:0:1}" == "-" ]]; then # test si un des mots clés commencent par un - (fait buguer grep)
+            zenity --error --title="Erreur de saisie" --text="L'un des mots-clés coommence par -. \n                Veuillez le corriger"
+            exit
+        fi
+    done
+}
+
 # Test des arguments donnés
 if [ "$1" == "-h" ]; then # Est ce que l'utilisateur demande l'aide de la commande
     help
@@ -104,6 +123,7 @@ elif [ "$1" == "-a" ]; then
     ajouter_fichier_mank
     exit
 elif [ "$1" == "-d" ]; then
+    verif_argument "${@:2}"
     parcours_fichier_-d "${@:2}" # donne tous les arguments sauf le 1er (-d)
     exit
 elif [ "$#" == 0 ]; then
@@ -112,6 +132,7 @@ elif [ "$#" == 0 ]; then
     help
     exit # quitte le programme
 else 
+    verif_argument "$@"
     parcours_fichier $@
     exit
 fi

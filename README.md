@@ -14,14 +14,17 @@
 
 5. **`parcours_fichier()`** : Cette fonction est le cœur du programme. Elle parcourt tous les fichiers contenus dans `mank_utils` et test la présence du ou des mots-clés dans ces derniers. La fonction **`parcours_fichier_-d()`** test si TOUS les mots clés spécifiés sont liés à la commande. 
 
+6. **`verif_argument()`** : Cetet fonction vérifie si l'utilisateur entre des mots-clés adéquats, c'est-à-dire qui ne commencent pas par un "-" ce qui ferait crasher le programme au niveau de grep.
+
 ### Test des arguments donnés :
 Le script vérifie les arguments passés lors de son exécution :
    - Si l'option `-h` est utilisée, il affiche l'aide en appelant la fonction `help()`.
    - Si l'option `-i` est utilisée, il affiche les commandes non prises en charge en appelant la fonction `commande_manquante()`.
    - Si l'option `-a` est utilisée, il permet à l'utilisateur d'ajouter un fichier de mank en appelant la fonction `ajouter_fichier_mank()`.
    - Si des mots-clés sont spécifiés, le programme fait appel à `parcours_fichier()`pour trouver les commandes associées ou non.
-   - Si l'option -d est utilisée, le programme fait appel à `parcours_fichier_-d`.
+   - Si l'option `-d` est utilisée, le programme fait appel à `parcours_fichier_-d`.
    - Si aucun argument n'est passé, il affiche un message d'erreur demandant à l'utilisateur de saisir un argument et affiche ensuite l'aide en appelant la fonction `help()`.
+   - Le programme utilise la fonction `verif_argument()` lors de l'utilisation de l'option `-d` et du fonctionnement sans paramètre.
    - Le programme doit normalement prendre en compte les mots-clés composés de deux mots séparés par un espace.
 
 ## Recherche de mots-clés :
@@ -32,23 +35,8 @@ Le script vérifie les arguments passés lors de son exécution :
 
 En résumé, le script `mank.sh` permet à l'utilisateur d'ajouter des descriptions de commandes avec des mots-clés associés dans des fichiers de mank, de rechercher ces descriptions en fonction des mots-clés spécifiés, et de voir les commandes non prises en charge.
 
-
-## Bug report
-- Si l'utilisateur spécifie un argumen comme -a et colle des caractères après, le programme plantera ou sortira un message d'erreur de `grep`
-### Exemple:
-```bash
-mank -d654
-
-grep: argument «654» incorrect pour «--directories»
-Les arguments valables sont :
-  - «read»
-  - «recurse»
-  - «skip»
-Usage : grep [OPTION]... MOTIFS [FICHIER]...
-Exécutez « grep --help » pour obtenir des renseignements complémentaires.
-grep: argument «654» incorrect pour «--directories»
-```
-
+## Dépendances
+- Le programme utilise zenity pour la gestion d'erreur. Veuillez l'installer pour utiliser mank
 
 ## Auteurs
 Edmond BERNE et Simon ROUGET
