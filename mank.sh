@@ -31,8 +31,8 @@ commande_manquante(){ # fonction qui affiche les commandes non prises en charge 
 # Fonction pour ajouter un fichier de mank
 ajouter_fichier_mank() {
     read -p "Nom du fichier de mank : " nom_fichier
-    if [ "$nom_fichier" == "" ] || [ -e "./mank_utils/$nom_fichier" ] || [[ "$nom_fichier" == */* ]]; then # test si nom vide ou fichier déjà existant
-        zenity --error --title="Erreur nom du fichier" --text="Veuillez renseigner un nom de fichier non nul et n'existant pas déjà."
+    if [ "$nom_fichier" == "" ] || [ -e "./mank_utils/$nom_fichier" ] || [[ "$nom_fichier" == */* ]] || [[ "${nom_fichier:0:1}" == "-" ]]; then # test si nom vide ou fichier déjà existant
+        zenity --error --title="Erreur nom du fichier" --text="Veuillez renseigner un nom de fichier valable (non nul, ne commençant pas par - et sans /) \n                 et n'existant pas déjà."
         exit
     fi
     while true; do # boucle pour gérer les entrées de la description
