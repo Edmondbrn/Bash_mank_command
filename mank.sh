@@ -12,7 +12,6 @@ help() {
     echo "-i            Affiche les commandes non prises en charges par mank"
     echo "-a            Ajouter un fichier de mank"
     echo "-d            Affiche les commandes contenant tous les mots clés spécifiés"
-    echo "Votre mot-clé sans espace"
 }
 
 # Fonction pour lister les fichiers dans un répertoire spécifié
@@ -50,19 +49,47 @@ ajouter_fichier_mank() {
 parcours_fichier(){
     DIR="./mank_utils" # creation du chemin vers le dossier contenant les fichiers descriptifs
     liste_fichier=$(Liste_Fichier $DIR) # recupère la sortie et l'applique à une variable
-
     check="0" # variable pour savoir si le mot a été trouvé ou non
     for element in $liste_fichier; do # parcours fichier dans le dossier
-            for cle in "$@"; do # parcours des mot cle si on en a plusieurs
-                if grep -q -w "$cle" "$DIR/$element"; then # grep -q n'affiche rien et permet de faire une condition
-                    echo ""$element" : $(head -n 1 "$DIR/$element") ("$cle")" # message de sortie en cas de match
-                    check=1
-                    break
-                fi
-            done;
+        tableau=()
+        for cle in "$@"; do # parcours des mot cle si on en a plusieurs
+            if grep -q -w "$cle" "$DIR/$element"; then # grep -q n'affiche rien et permet de faire une condition et -w permet de ne chercher que des mots entiers et pas des sous chaines
+                tableau+=("$cle") # on ajoute le mot clé dans un tuple
+            fi
         done;
-    if [ "$check" == "0" ]; then # message d'erreur si on n'a rien trouvéa
-        echo "Erreur : mot clé inconnu dans la base de données"
+        if [ ${#tableau[@]} != 0 ]; then # on teste si le tuple est vide, donc si on au moins 1 match
+                echo ""$element" : $(head -n 1 "$DIR/$element") ("${tableau[@]}")" # message de sortie en cas de match
+                check=1
+        fi
+    done;
+    if [ "$check" == "0" ]; then # message d'erreur si on n'a rien trouvé
+        echo "Erreur : mot-clé inconnu dans la base de données"
+    fi
+}
+
+parcours_fichier_-d(){
+    DIR="./mank_utils" # creation du chemin vers le dossier contenant les fichiers descriptifs
+    liste_fichier=$(Liste_Fichier $DIR) # recupère la sortie et l'applique à une variable
+    check="0" # variable pour savoir si le mot a été trouvé ou non
+    nbr_mot=$#  # compte le nombre de mots donné (ne prend pas en compte l'argument -d)
+    if [ "$nbr_mot" == 0 ]; then
+        echo "Veuillez spécifier des mots-clés avec l'option -d s'il vous plait"
+        exit
+    fi
+    for element in $liste_fichier; do # parcours fichier dans le dossier
+        tableau=()
+        for cle in "$@"; do # parcours des mot cle si on en a plusieurs
+            if grep -q -w "$cle" "$DIR/$element"; then # grep -q n'affiche rien et permet de faire une condition et -w permet de ne chercher que des mots entiers et pas des sous chaines
+                tableau+=("$cle") # on ajoute le mot clé dans un tuple
+            fi
+        done;
+        if [ "$nbr_mot" == "${#tableau[@]}" ]; then # test si on a trouvé tous les mots clés dans la commande
+            echo "Match parfait, "$element" : $(head -n 1 "$DIR/$element") ("${tableau[@]}")"
+            check=1
+        fi
+    done;
+    if [ "$check" == "0" ]; then # message d'erreur si on n'a rien trouvé
+        echo "Erreur : aucun match parfait dans les données mank"
     fi
 }
 
@@ -76,7 +103,10 @@ elif [ "$1" == "-i" ]; then # Si l'utilisateur souhaite connaitre les commandes 
 elif [ "$1" == "-a" ]; then
     ajouter_fichier_mank
     exit
-elif [ "$#" == 0 ]
+elif [ "$1" == "-d" ]; then
+    parcours_fichier_-d "${@:2}" # donne tous les arguments sauf le 1er (-d)
+    exit
+elif [ "$#" == 0 ]; then
     echo "Erreur : veuillez saisir un argument. Voici l'aide de la commande :"
     echo
     help
