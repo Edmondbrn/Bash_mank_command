@@ -7,7 +7,7 @@ help() {
     echo "Fonctionne en plaçant un ou plusieurs mot-clés en argument."
     echo "Si plusieurs arguments sont donnés la commande ressortira tous les match comprenant au moins un des mot-clés (voir -d pour le contraire)"
     echo
-    echo "Argument:"
+    echo "Arguments:"
     echo "-h            Affiche l'aide de la commande"
     echo "-i            Affiche les commandes non prises en charges par mank"
     echo "-a            Ajouter un fichier de mank"
