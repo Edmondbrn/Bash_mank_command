@@ -1,6 +1,5 @@
-#!/bin/bash
-# Fonction qui affiche l'aide liée à la commande
-help() {
+#!bin/bash -
+help(){ # Fonction qui affiche l'aide liée à la commande
     echo "usage: $cmd aide recherche par mots clés"
     echo
     echo "Commande qui décrit brièvement une autre commande."
@@ -10,12 +9,11 @@ help() {
     echo "Argument:"
     echo "-h            Affiche l'aide de la commande"
     echo "-i            Affiche les commandes non prises en charges par mank"
-    echo "-a            Ajouter un fichier de mank"
-    echo "-d            Affiche les commandes contenant tous les mots clés spécifiés"
+    echo "-a            Permet d'implémenter une nouvelle commande dans le registre mank"
+    echo "-d            Permet de sortir les commandes comprenant plusieurs mot-clés s'ils sont spécifiés"
     echo "Votre mot-clé sans espace"
 }
 
-# Fonction pour lister les fichiers dans un répertoire spécifié
 Liste_Fichier() {
     liste_fichier=$(ls "$1") # Stocke la liste des fichiers du sous-dossier mank_utils dans la variable liste_fichier
     echo "$liste_fichier" # Affiche la liste des fichiers
@@ -28,23 +26,6 @@ commande_manquante(){ # fonction qui affiche les commandes non prises en charge 
     echo "Les commandes non prises en compte par mank sont:"
     echo "$liste_com_nntraitee" | pr -8 -t -a # formate la sortie
 
-}
-
-# Fonction pour ajouter un fichier de mank
-ajouter_fichier_mank() {
-    read -p "Nom du fichier de mank : " nom_fichier
-    read -p "Description : " description
-
-    echo "$description" > "./mank_utils/$nom_fichier"
-
-    echo "Mots clés (tapez 'fin' pour terminer) : "
-    while true; do
-        read mot_cle
-        if [ "$mot_cle" == "fin" ]; then
-            break
-        fi
-        echo "$mot_cle" >> "./mank_utils/$nom_fichier"
-    done
 }
 
 parcours_fichier(){
@@ -66,6 +47,7 @@ parcours_fichier(){
     fi
 }
 
+
 # Test des arguments donnés
 if [ "$1" == "-h" ]; then # Est ce que l'utilisateur demande l'aide de la commande
     help
@@ -74,9 +56,8 @@ elif [ "$1" == "-i" ]; then # Si l'utilisateur souhaite connaitre les commandes 
     commande_manquante
     exit
 elif [ "$1" == "-a" ]; then
-    ajouter_fichier_mank
-    exit
-elif [ "$#" == 0 ]
+    echo "Pas encore fait" # Ca serait bien d'avoir une petite fenetre pour que ce soit un peu plus fun à remplir
+elif [ "$#" == 0 ]; then
     echo "Erreur : veuillez saisir un argument. Voici l'aide de la commande :"
     echo
     help
@@ -85,4 +66,3 @@ else
     parcours_fichier $@
     exit
 fi
-
