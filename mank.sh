@@ -103,7 +103,7 @@ parcours_fichier_-d(){
     fi
 }
 
-verif_argument(){
+verif_argument(){ # Fonction qui vérifie si les mots-clés données sont correctes
     for mot in "$@"; do
         if [[ "${mot:0:1}" == "-" ]]; then # test si un des mots clés commencent par un - (fait buguer grep)
             zenity --error --title="Erreur de saisie" --text="L'un des mots-clés coommence par -. \n                Veuillez le corriger."
